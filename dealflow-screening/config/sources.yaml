@@ -1,0 +1,51 @@
+# Paramètres des sources de données.
+# Les clés API elles-mêmes ne vont PAS ici — elles vont dans .env (voir .env.example)
+# Ce fichier ne contient que des paramètres non sensibles.
+
+criteria:
+  min_employees: 0
+  max_employees: 500
+  max_revenue_eur: 150_000_000
+  max_age_years: 20
+  geo_priority_1: ["FR", "DE", "GB", "NL", "BE", "LU", "SE", "DK", "NO", "FI"]
+  geo_priority_2: ["ES", "IT", "PL", "CZ", "AT", "PT", "IE"]
+  exclude_legal_forms:       # formes juridiques typiques des SPV mono-actifs
+    - "SCI"                  # Société Civile Immobilière — quasi toujours mono-actif
+    # NB: ne PAS exclure les SAS/SASU de développeurs de projets — voir THESIS.md §4
+
+insee:
+  base_url: "https://api.insee.fr/entreprises/sirene/V3.11"
+  lookback_days: 90          # fenêtre de "création récente" pour le signal
+  rate_limit_per_min: 30     # quota API Sirene V3 gratuit indicatif — à vérifier sur votre compte
+
+inpi:
+  base_url: "https://api-gateway.inpi.fr"
+  lookback_days: 180         # fenêtre de "dépôt récent" pour brevets/marques
+
+pappers:
+  base_url: "https://api.pappers.fr/v2"
+  # usage batch régulier -> privilégier une clé API Pappers dédiée
+  # plutôt que le connecteur MCP conversationnel (quotas différents)
+
+press:
+  # Le web_search intégré à Claude Code sert de canal principal.
+  # Optionnel : brancher une clé SerpAPI/Google CSE ici si vous voulez
+  # un accès programmatique hors session interactive Claude Code.
+  serpapi_enabled: false
+  target_outlets:
+    - "sifted.eu"
+    - "eu-startups.com"
+    - "maddyness.com"
+    - "lesechos.fr"          # snippets publics uniquement, pas de scraping paywall
+    - "latribune.fr"
+    - "novethic.fr"
+
+scoring:
+  weights:
+    recent_funding: 3
+    headcount_growth: 3
+    recent_patent: 2
+    sector_ranking_mention: 2
+    named_b2b_clients: 2
+    notable_founder: 1
+  min_score_to_report: 4     # seuil de coupure — ajustable selon volume souhaité

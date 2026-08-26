@@ -1,0 +1,6 @@
+.env
+data/companies_seen.db
+data/exports/*.csv
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,172 @@
+# Codes NAF cibles par sous-secteur EFI III
+# Dérivé de THESIS.md — toute modification de périmètre sectoriel doit être
+# répercutée ici ET dans THESIS.md pour rester cohérent.
+#
+# `keywords` sert de second filtre (sur l'objet social / activité déclarée)
+# pour éviter le bruit des codes NAF trop larges.
+
+transition_energetique:
+  label: "Transition énergétique"
+  naf_codes:
+    - "35.11Z"  # Production d'électricité
+    - "35.12Z"  # Transport d'électricité
+    - "35.13Z"  # Distribution d'électricité
+    - "35.14Z"  # Commerce d'électricité
+    - "27.20Z"  # Piles et accumulateurs
+    - "28.25Z"  # Équipements aérauliques et frigorifiques
+    - "35.30Z"  # Vapeur et air conditionné
+    - "43.22B"  # Installation thermique et climatisation
+    - "27.11Z"  # Moteurs, génératrices, transformateurs
+    - "27.12Z"  # Matériel de distribution et de commande électrique
+    - "20.11Z"  # Chimie de base (hydrogène)
+    - "24.46Z"  # Élaboration de matières nucléaires
+    - "20.13B"  # Autres produits chimiques inorganiques de base (nucléaire adjacents)
+    - "62.01Z"  # Programmation informatique
+    - "58.29C"  # Édition de logiciels applicatifs
+    - "46.69B"  # Commerce de gros de matériel électrique
+  keywords:
+    - solaire
+    - éolien
+    - photovoltaïque
+    - PPA
+    - autoconsommation
+    - "développeur de projets"
+    - "smart grid"
+    - agrégation
+    - batterie
+    - stockage
+    - "pompe à chaleur"
+    - géothermie
+    - "réseau de chaleur"
+    - "chaleur industrielle"
+    - "fusion nucléaire"
+    - nucléaire
+    - hydrogène
+    - électrolyseur
+    - "gestion de l'énergie"
+    - "gestion technique du bâtiment"
+    - GTB
+
+transport_supply_chain:
+  label: "Transport & Supply Chain"
+  naf_codes:
+    - "29.10Z"  # Construction de véhicules automobiles
+    - "29.32Z"  # Autres équipements automobiles
+    - "30.11Z"  # Construction de navires et structures flottantes
+    - "30.30Z"  # Construction aéronautique et spatiale
+    - "49.41A"  # Transports routiers de fret interurbains
+    - "49.41B"  # Transports routiers de fret de proximité
+    - "50.20Z"  # Transport maritime et côtier de fret
+    - "50.40Z"  # Transport fluvial de fret
+    - "52.10A"  # Entreposage frigorifique
+    - "52.10B"  # Entreposage non frigorifique
+    - "52.29A"  # Messagerie, fret express
+    - "52.29B"  # Affrètement et organisation des transports
+    - "62.01Z"  # Programmation informatique
+    - "58.29C"  # Édition de logiciels applicatifs
+    - "77.11A"  # Location de courte durée de véhicules
+    - "77.11B"  # Location longue durée de véhicules légers
+  keywords:
+    - "véhicule électrique"
+    - électrification
+    - flotte
+    - recharge
+    - "borne de recharge"
+    - teledriving
+    - autonome
+    - "fleet management"
+    - logistique
+    - "supply chain"
+    - "chaîne du froid"
+    - fluvial
+    - maritime
+    - aviation électrique
+    - e-VTOL
+    - leasing
+
+industrialisation:
+  label: "Industrialisation & Solutions industrielles"
+  naf_codes:
+    - "23.51Z"  # Fabrication de ciment
+    - "20.14Z"  # Autres produits chimiques organiques de base
+    - "20.16Z"  # Fabrication de matières plastiques de base
+    - "24.10Z"  # Sidérurgie
+    - "24.42Z"  # Métallurgie de l'aluminium
+    - "25.11Z"  # Fabrication de structures métalliques
+    - "28.99Z"  # Fabrication d'autres machines spécialisées
+    - "28.29B"  # Fabrication d'autres machines d'usage général
+    - "38.32Z"  # Récupération de déchets triés
+    - "62.01Z"  # Programmation informatique
+    - "63.11Z"  # Traitement de données, hébergement
+  keywords:
+    - décarbonation
+    - robotique
+    - automatisation
+    - "économie circulaire"
+    - recyclage
+    - "nouveaux matériaux"
+    - biosourcé
+    - "matériaux biosourcés"
+    - "jumeau numérique"
+    - "pilotage de production"
+    - efficacité industrielle
+
+batiment:
+  label: "Bâtiment (Built Environment)"
+  naf_codes:
+    - "41.20A"  # Construction de maisons individuelles
+    - "41.20B"  # Construction d'autres bâtiments
+    - "43.29A"  # Travaux d'isolation
+    - "43.99A"  # Travaux d'étanchéification
+    - "71.11Z"  # Activités d'architecture
+    - "71.12B"  # Ingénierie, études techniques
+    - "81.10Z"  # Services d'aménagement paysager et entretien de bâtiments
+    - "81.21Z"  # Nettoyage courant des bâtiments
+    - "62.01Z"  # Programmation informatique
+    - "58.29C"  # Édition de logiciels applicatifs
+    - "68.20B"  # Location de logements
+  keywords:
+    - "construction hors-site"
+    - modulaire
+    - rénovation
+    - isolation
+    - BIM
+    - "conception énergétique"
+    - "gestion technique du bâtiment"
+    - proptech
+    - "maintenance prédictive"
+    - "facility management"
+    - co-living
+
+ressources_critiques:
+  label: "Ressources critiques, agriculture, eau, biodiversité"
+  naf_codes:
+    - "07.29Z"  # Extraction d'autres minerais de métaux non ferreux
+    - "08.99Z"  # Autres activités extractives
+    - "01.11Z"  # Culture de céréales (générique — filtrer sur mots-clés)
+    - "01.50Z"  # Culture et élevage associés
+    - "20.15Z"  # Fabrication de produits azotés et d'engrais
+    - "36.00Z"  # Captage, traitement, distribution d'eau
+    - "37.00Z"  # Collecte et traitement des eaux usées
+    - "39.00Z"  # Dépollution et autres services de gestion des déchets
+    - "02.10Z"  # Sylviculture et autres activités forestières
+    - "62.01Z"  # Programmation informatique
+    - "63.11Z"  # Traitement de données, hébergement
+  keywords:
+    - "minéraux critiques"
+    - extraction
+    - agroécologie
+    - "agriculture régénérative"
+    - "ferme verticale"
+    - intrants
+    - biostimulant
+    - "gestion de l'eau"
+    - dessalement
+    - "eaux usées"
+    - séquestration
+    - carbone
+    - reforestation
+    - "gestion forestière"
+    - biodiversité
+    - "agritech"
+    - MRV
