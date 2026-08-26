@@ -65,18 +65,30 @@ def _all_target_naf_codes() -> dict[str, list[str]]:
     mapping: dict[str, list[str]] = {}
     for sector_key, sector_cfg in NAF_CFG.items():
         for code in sector_cfg["naf_codes"]:
-            naf_code = code.replace(".", "")  # l'API attend "3511Z", pas "35.11Z"
+            naf_code = code.replace(".", "")  # forme interne sans point, pour matcher GENERIC_SOFTWARE_NAF_CODES
             if naf_code in GENERIC_SOFTWARE_NAF_CODES:
                 continue
             mapping.setdefault(naf_code, []).append(sector_key)
     return mapping
 
 
+def _to_dotted_naf(naf_code_no_dot: str) -> str:
+    """"3511Z" -> "35.11Z" — l'API attend le paramètre `activite_principale`
+    au format pointé (vérifié empiriquement : `code_naf` n'existe pas et
+    `activite_principale` sans point est rejeté avec la liste des valeurs
+    valides, toutes pointées)."""
+    return f"{naf_code_no_dot[:2]}.{naf_code_no_dot[2:]}"
+
+
 def fetch_by_naf(naf_code_no_dot: str, per_page: int = 25) -> Iterator[dict]:
     """Pagine sur toutes les sociétés d'un code NAF donné (jusqu'à MAX_PAGES_PER_NAF)."""
     page = 1
     while page <= MAX_PAGES_PER_NAF:
-        params = {"code_naf": naf_code_no_dot, "page": page, "per_page": per_page}
+        params = {
+            "activite_principale": _to_dotted_naf(naf_code_no_dot),
+            "page": page,
+            "per_page": per_page,
+        }
         resp = requests.get(BASE_URL, params=params, timeout=30)
         if resp.status_code == 429:
             time.sleep(2)
