@@ -13,9 +13,13 @@ from __future__ import annotations
 
 import os
 import time
+from pathlib import Path
 from typing import Optional
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 TOKEN_URL = "https://api.insee.fr/token"
 SIRENE_BASE_URL = "https://api.insee.fr/entreprises/sirene/V3.11/siren"

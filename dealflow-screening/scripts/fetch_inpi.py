@@ -16,9 +16,13 @@ from __future__ import annotations
 
 import os
 from datetime import date, timedelta
+from pathlib import Path
 from typing import Optional
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 # NOTE : l'auth data.inpi.fr fonctionne par couple identifiant/mot de passe,
 # pas par clé Bearer simple — le mécanisme exact (échange contre un token,
