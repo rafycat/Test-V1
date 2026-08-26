@@ -33,7 +33,13 @@ SPV_LEGAL_FORMS = {f.upper() for f in SOURCES_CFG["criteria"]["exclude_legal_for
 SPV_NAME_PATTERNS = [
     re.compile(r"\bparc\s+(éolien|solaire|eolien)\b", re.IGNORECASE),
     re.compile(r"\bcentrale\s+(solaire|photovoltaïque)\b", re.IGNORECASE),
-    re.compile(r"\bSPV\b", re.IGNORECASE),
+    # \bSPV\b seul ne matche jamais "SPV3" : \b ne coupe pas entre "V" et "3"
+    # (tous deux caractères de mot). Capte aussi "SPV-3", "SPV 3".
+    re.compile(r"\bSPV[\s-]?\d*\b", re.IGNORECASE),
+    # "solaire"/"éolien(ne)" seuls (pas seulement "parc X"/"centrale X") — les
+    # nombreux "X SOLAIRE" de sociétés-projets (ex: "Sagnat Solaire") y échappaient.
+    # Reste protégé par PROJECT_DEVELOPER_HINTS ci-dessous.
+    re.compile(r"\b(solaires?|[ée]olien(ne)?s?)\b", re.IGNORECASE),
 ]
 
 # Mots qui, à l'inverse, signalent un développeur de projets (à NE PAS exclure
