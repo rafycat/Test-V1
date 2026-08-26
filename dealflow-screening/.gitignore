@@ -1,6 +1,7 @@
 .env
 data/companies_seen.db
 data/exports/*.csv
+data/exports/*.xlsx
 __pycache__/
 *.pyc
 .venv/
