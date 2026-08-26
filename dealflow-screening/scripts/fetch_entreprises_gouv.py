@@ -35,7 +35,13 @@ import requests
 
 BASE_URL = "https://recherche-entreprises.api.gouv.fr/search"
 RATE_LIMIT_PER_SEC = 5  # on reste sous la limite officielle de 7/s par prudence
-MAX_PAGES_PER_NAF = 20  # garde-fou : évite de tout paginer sur un NAF trop large
+MAX_PAGES_PER_NAF = 3  # garde-fou : évite de tout paginer sur un NAF trop large (temporairement réduit pour le premier test)
+
+# Codes NAF "programmation informatique" / édition de logiciels — couvrent des
+# dizaines de milliers de sociétés françaises et l'API gratuite ne renvoie pas
+# activite_description pour les filtrer par mot-clé. Exclus du run principal ;
+# à traiter plus tard par recherche textuelle dédiée.
+GENERIC_SOFTWARE_NAF_CODES = {"6201Z", "5829C", "6311Z"}
 
 CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 with open(CONFIG_DIR / "naf_codes.yaml", encoding="utf-8") as f:
@@ -51,11 +57,18 @@ TRANCHE_EFFECTIF_MIDPOINT = {
 }
 
 
-def _all_target_naf_codes() -> dict[str, str]:
-    mapping = {}
+def _all_target_naf_codes() -> dict[str, list[str]]:
+    """Retourne {code_naf: [secteurs]} — plusieurs secteurs de THESIS.md peuvent
+    cibler le même code NAF (ex: codes batteries en transition_energetique ET
+    transport), donc un simple dict {code: secteur} perdrait les secteurs
+    additionnels. Exclut les codes logiciel génériques (GENERIC_SOFTWARE_NAF_CODES)."""
+    mapping: dict[str, list[str]] = {}
     for sector_key, sector_cfg in NAF_CFG.items():
         for code in sector_cfg["naf_codes"]:
-            mapping[code.replace(".", "")] = sector_key  # l'API attend "3511Z", pas "35.11Z"
+            naf_code = code.replace(".", "")  # l'API attend "3511Z", pas "35.11Z"
+            if naf_code in GENERIC_SOFTWARE_NAF_CODES:
+                continue
+            mapping.setdefault(naf_code, []).append(sector_key)
     return mapping
 
 
@@ -109,9 +122,13 @@ def _normalize(result: dict, sector_key: str) -> dict:
 
 def run_all_sectors() -> list[dict]:
     results = []
-    for naf_code, sector_key in _all_target_naf_codes().items():
+    naf_to_sectors = _all_target_naf_codes()
+    total = len(naf_to_sectors)
+    for i, (naf_code, sector_keys) in enumerate(naf_to_sectors.items(), start=1):
+        print(f"[{i}/{total}] Code NAF {naf_code} ({', '.join(sector_keys)})...")
         for raw in fetch_by_naf(naf_code):
-            results.append(_normalize(raw, sector_key))
+            for sector_key in sector_keys:
+                results.append(_normalize(raw, sector_key))
     return results
 
 
