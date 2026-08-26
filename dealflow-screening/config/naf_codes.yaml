@@ -93,7 +93,8 @@ industrialisation:
     - "24.10Z"  # Sidérurgie
     - "24.42Z"  # Métallurgie de l'aluminium
     - "25.11Z"  # Fabrication de structures métalliques
-    - "28.99Z"  # Fabrication d'autres machines spécialisées
+    - "28.99A"  # Fabrication de machines pour l'extraction ou la construction
+    - "28.99B"  # Fabrication d'autres machines spécialisées n.c.a.
     - "28.29B"  # Fabrication d'autres machines d'usage général
     - "38.32Z"  # Récupération de déchets triés
     - "62.01Z"  # Programmation informatique

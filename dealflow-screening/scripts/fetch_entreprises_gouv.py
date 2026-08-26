@@ -138,9 +138,16 @@ def run_all_sectors() -> list[dict]:
     total = len(naf_to_sectors)
     for i, (naf_code, sector_keys) in enumerate(naf_to_sectors.items(), start=1):
         print(f"[{i}/{total}] Code NAF {naf_code} ({', '.join(sector_keys)})...")
-        for raw in fetch_by_naf(naf_code):
-            for sector_key in sector_keys:
-                results.append(_normalize(raw, sector_key))
+        try:
+            for raw in fetch_by_naf(naf_code):
+                for sector_key in sector_keys:
+                    results.append(_normalize(raw, sector_key))
+        except requests.exceptions.HTTPError as e:
+            if e.response is not None and e.response.status_code == 400:
+                print(f"  ⚠ Code NAF {naf_code} rejeté par l'API (400, probablement invalide) — "
+                      f"ignoré, run poursuivi sur les codes restants : {e}")
+                continue
+            raise
     return results
 
 
