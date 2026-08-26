@@ -48,4 +48,8 @@ scoring:
     sector_ranking_mention: 2
     named_b2b_clients: 2
     notable_founder: 1
-  min_score_to_report: 4     # seuil de coupure — ajustable selon volume souhaité
+  min_score_to_report: 0     # seuil de coupure — ajustable selon volume souhaité
+                              # (0 : les filtres durs + le secteur suffisent à qualifier ;
+                              # nécessaire tant qu'aucune clé Pappers/INPI/presse n'est
+                              # branchée, sinon detected_signals est toujours vide et le
+                              # score toujours nul, quel que soit le seuil > 0 choisi)
