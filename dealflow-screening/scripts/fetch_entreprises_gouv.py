@@ -80,6 +80,9 @@ def _to_dotted_naf(naf_code_no_dot: str) -> str:
     return f"{naf_code_no_dot[:2]}.{naf_code_no_dot[2:]}"
 
 
+MAX_CONNECTION_RETRIES = 3  # tolère les resets de connexion intermittents côté réseau/API
+
+
 def fetch_by_naf(naf_code_no_dot: str, per_page: int = 25) -> Iterator[dict]:
     """Pagine sur toutes les sociétés d'un code NAF donné (jusqu'à MAX_PAGES_PER_NAF)."""
     page = 1
@@ -89,7 +92,14 @@ def fetch_by_naf(naf_code_no_dot: str, per_page: int = 25) -> Iterator[dict]:
             "page": page,
             "per_page": per_page,
         }
-        resp = requests.get(BASE_URL, params=params, timeout=30)
+        for attempt in range(1, MAX_CONNECTION_RETRIES + 1):
+            try:
+                resp = requests.get(BASE_URL, params=params, timeout=30)
+                break
+            except requests.exceptions.ConnectionError:
+                if attempt == MAX_CONNECTION_RETRIES:
+                    raise
+                time.sleep(2 ** attempt)  # backoff : 2s, 4s
         if resp.status_code == 429:
             time.sleep(2)
             continue
